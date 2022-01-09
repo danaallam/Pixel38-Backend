@@ -6,9 +6,9 @@ scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date
 
 type Query {
     users: [User!]! @all
-    user(id: ID @eq): User @find
+    user(id: ID @eq): User @find @guard(with: ["api"])
     shipments: [Shipment!]! @all
-    shipment(id: ID @eq): Shipment @find
+    shipment(id: ID @eq): Shipment @find @guard(with: ["api"])
 }
 
 type Mutation {
@@ -21,7 +21,9 @@ type Mutation {
     socialLogin(input: SocialLoginInput! @spread): AuthPayload! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\SocialLogin@resolve")
     verifyEmail(input: VerifyEmailInput! @spread): AuthPayload! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\VerifyEmail@resolve")
     updatePassword(input: UpdatePassword! @spread): UpdatePasswordResponse! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\UpdatePassword@resolve") @guard(with: ["api"])
-    createShipment(user_id: ID!, waybill: Int!): Shipment! @create
+    createShipment(user_id: ID!, waybill: Int!): Shipment! @create @guard(with: ["api"])
+    deleteShipment(id: ID!): Shipment! @delete @guard(with: ["api"])
+    updateShipment(id: ID!, user_id: ID!, waybill: Int!): Shipment! @update @guard(with: ["api"])
 }
 
 type User {
